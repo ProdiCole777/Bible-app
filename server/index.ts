@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import fetch from "node-fetch"; // install this: npm install node-fetch
+import fetch from "node-fetch";
 
 dotenv.config();
 
@@ -34,7 +34,23 @@ app.get("/api/bible/:book/:chapter/:verse?", async (req, res) => {
   }
 });
 
-// ✅ Start server
+app.get("/", (req, res) => {
+  res.send("Server is running!");
+});
+
+app.get("/api/bible/:book/:chapter/:verse?", async (req, res, next) => {
+  try {
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Error handling middleware 
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error("Error:", err.message || err);
+  res.status(500).json({ error: "Something went wrong on the server." });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
